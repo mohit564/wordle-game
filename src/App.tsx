@@ -96,7 +96,7 @@ const App = () => {
           onChange={(text) => handleInputChange(text, index)}
           numInputs={5}
           containerStyle={`container ${containerClasses[index].join(" ")}`}
-          inputStyle={"input-boxes"}
+          inputStyle={`input-boxes ${index !== attempt ? "disable-click" : ""}`}
           focusStyle={index === attempt && !resultMessage ? "input-focus" : ""}
           onSubmit={handleSubmit}
           shouldAutoFocus={true}

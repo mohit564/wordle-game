@@ -30,6 +30,10 @@ input:disabled {
   opacity: 1 !important;
 }
 
+.disable-click {
+  pointer-events: none;
+}
+
 .container.submitted input {
   background: #3a3a3c;
 }
