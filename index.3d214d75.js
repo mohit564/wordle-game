@@ -27158,19 +27158,27 @@ var _s = $RefreshSig$();
 const App = ()=>{
     _s();
     const inputRef = (0, _react.useRef)(null);
-    const [word, setWord] = (0, _react.useState)("");
+    const [attempt, setAttempt] = (0, _react.useState)(0);
+    const [responses, setResponses] = (0, _react.useState)(Array(6).fill(""));
     const [target, setTarget] = (0, _react.useState)((0, _word.getRandomWord)());
+    const [containerClasses, setContainerClasses] = (0, _react.useState)(Array(6).fill([
+        ""
+    ]));
+    const [resultMessage, setResultMessage] = (0, _react.useState)("");
     const [isInputDisabled, setInputDisabled] = (0, _react.useState)(false);
-    const [containerClasses, setContainerClasses] = (0, _react.useState)([]);
-    const handleInputChange = (text)=>{
+    const handleInputChange = (text, index)=>{
         if (!text.match(/^[a-zA-Z]+$/)) {
-            if (inputRef.current) inputRef.current.focusInput(word.length);
+            inputRef.current?.focusInput(responses[index].length);
             return;
         }
-        setWord(text.toUpperCase());
+        let temp = [
+            ...responses
+        ];
+        temp[index] = text.toUpperCase();
+        setResponses(temp);
     };
     const handleSubmit = ()=>{
-        if (word.length < 5) {
+        if (responses[attempt].length < 5) {
             (0, _reactHotToastDefault.default)("Please enter all letters", {
                 duration: 1000,
                 icon: "\uD83D\uDE4F"
@@ -27180,20 +27188,27 @@ const App = ()=>{
         let classes = [
             "submitted"
         ];
-        for(let i = 0; i < word.length; i++){
-            if (word.charAt(i) === target.charAt(i)) {
+        for(let i = 0; i < 5; i++){
+            if (responses[attempt].charAt(i) === target.charAt(i)) {
                 classes.push(`correct${i + 1}`);
                 continue;
             }
-            if (target.includes(word.charAt(i))) classes.push(`present${i + 1}`);
+            if (target.includes(responses[attempt].charAt(i))) classes.push(`present${i + 1}`);
         }
-        setContainerClasses(classes);
-        setInputDisabled(true);
+        let temp = [
+            ...containerClasses
+        ];
+        temp[attempt] = classes;
+        setContainerClasses(temp);
+        if (responses[attempt] === target) setResultMessage("You Won. Congratulations!");
+        setAttempt((prev)=>prev + 1);
     };
     const handleReset = ()=>{
-        setWord("");
+        setAttempt(0);
+        setResponses(Array(6).fill(""));
         setTarget((0, _word.getRandomWord)());
-        setContainerClasses([]);
+        setContainerClasses(Array(6).fill([]));
+        setResultMessage("");
         setInputDisabled(false);
     };
     (0, _react.useEffect)(()=>{
@@ -27201,7 +27216,15 @@ const App = ()=>{
     }, [
         target
     ]);
-    const resultMessage = word === target ? "You Won. Congratulations!" : "You Lost. Try Again!";
+    (0, _react.useEffect)(()=>{
+        if (attempt > 5) {
+            setResultMessage(`Answer was ${target}. Best Luck Next Time!`);
+            setInputDisabled(true);
+        }
+        inputRef.current?.focusInput(0);
+    }, [
+        attempt
+    ]);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _jsxDevRuntime.Fragment), {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h2", {
@@ -27209,63 +27232,60 @@ const App = ()=>{
                 children: "Wordle Game"
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 69,
+                lineNumber: 89,
                 columnNumber: 7
             }, undefined),
-            isInputDisabled && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
+            resultMessage && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("h3", {
                 className: "result",
-                children: [
-                    "Result : ",
-                    resultMessage
-                ]
-            }, void 0, true, {
-                fileName: "src/App.tsx",
-                lineNumber: 70,
-                columnNumber: 27
-            }, undefined),
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react18InputOtpDefault.default), {
-                ref: inputRef,
-                value: word,
-                onChange: handleInputChange,
-                numInputs: 5,
-                containerStyle: `container ${containerClasses.join(" ")}`,
-                inputStyle: "input-boxes",
-                focusStyle: !isInputDisabled ? "input-focus" : "",
-                onSubmit: handleSubmit,
-                shouldAutoFocus: true,
-                isDisabled: isInputDisabled
+                children: resultMessage
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 71,
-                columnNumber: 7
+                lineNumber: 90,
+                columnNumber: 25
             }, undefined),
-            (!isInputDisabled || word.length < 5) && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+            responses.map((_, index)=>/*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _react18InputOtpDefault.default), {
+                    ref: index === attempt ? inputRef : null,
+                    value: responses[index],
+                    onChange: (text)=>handleInputChange(text, index),
+                    numInputs: 5,
+                    containerStyle: `container ${containerClasses[index].join(" ")}`,
+                    inputStyle: "input-boxes",
+                    focusStyle: index === attempt && !resultMessage ? "input-focus" : "",
+                    onSubmit: handleSubmit,
+                    shouldAutoFocus: true,
+                    isDisabled: isInputDisabled || Boolean(resultMessage)
+                }, index, false, {
+                    fileName: "src/App.tsx",
+                    lineNumber: 92,
+                    columnNumber: 9
+                }, undefined)),
+            attempt <= 5 && !resultMessage && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
                 className: "submit",
                 onClick: handleSubmit,
                 children: "Submit"
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 84,
+                lineNumber: 107,
                 columnNumber: 9
             }, undefined),
-            isInputDisabled && word.length === 5 && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
+            resultMessage && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("button", {
                 className: "reset",
                 onClick: handleReset,
                 children: "Reset"
             }, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 89,
+                lineNumber: 112,
                 columnNumber: 9
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactHotToast.Toaster), {}, void 0, false, {
                 fileName: "src/App.tsx",
-                lineNumber: 93,
+                lineNumber: 116,
                 columnNumber: 7
             }, undefined)
         ]
     }, void 0, true);
 };
-_s(App, "r5rNTEnfL8i/daO3ifFMc6XC0iU=");
+_s(App, "SVZkjbEg7awxk/NRVZbGoVEevs0=");
 _c = App;
 exports.default = App;
 var _c;
