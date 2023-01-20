@@ -1,0 +1,76 @@
+body {
+  box-sizing: border-box;
+  background: #121213;
+  margin: 0;
+  padding: 0;
+  font-family: Poppins, sans-serif;
+}
+
+#app {
+  padding-top: 2rem;
+}
+
+.heading, .result {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.container {
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-boxes {
+  height: 50px;
+  color: #fff;
+  background: #000;
+  border: 2px solid #3a3a3c;
+  outline: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 50px !important;
+}
+
+.input-focus {
+  border: 4px solid #565758;
+}
+
+.container.submitted input {
+  background: #3a3a3c;
+}
+
+.container.correct1 div:nth-child(1) input, .container.correct2 div:nth-child(2) input, .container.correct3 div:nth-child(3) input, .container.correct4 div:nth-child(4) input, .container.correct5 div:nth-child(5) input {
+  background: #6aaa64;
+}
+
+.container.present1 div:nth-child(1) input, .container.present2 div:nth-child(2) input, .container.present3 div:nth-child(3) input, .container.present4 div:nth-child(4) input, .container.present5 div:nth-child(5) input {
+  background: #b59f3b;
+}
+
+button {
+  color: #fff;
+  background: #818384;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  margin: 2rem auto;
+  padding: 12px 24px;
+  font-size: 1rem;
+  display: flex;
+}
+
+button.submit {
+  background: #818384;
+}
+
+button.reset {
+  background: #708af4;
+}
+
+button.submit:hover, button.reset:hover {
+  transform: translate(1.1px);
+}
+
+/*# sourceMappingURL=index.9e4c6fd2.css.map */
