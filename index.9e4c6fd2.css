@@ -6,6 +6,10 @@ body {
   font-family: Poppins, sans-serif;
 }
 
+#app {
+  padding-top: 2rem;
+}
+
 .heading, .result {
   text-align: center;
   color: #fff;
@@ -35,6 +39,10 @@ body {
 
 input:disabled {
   opacity: 1 !important;
+}
+
+.disable-click {
+  pointer-events: none;
 }
 
 .container.submitted input {
